@@ -152,3 +152,30 @@ const obj: Record<string, string | number> = {
 // Output: 26
 console.log(ageIncrementor(obj));
 ```
+
+The `never` type represents the type of values which never occur. It is useful where a function never returns or when it throws an error which halts the execution. It is useful to use in function which never returns a value.
+
+```typescript
+function throwSomeError (message: string): never {
+	throw new Error(message);
+}
+```
+
+It can also be useful in cases where we exhaust all the possibilities. In a type guard, if typescript is unable to narrow down the type to a specific set of possibilities, we can use the `never` type to signal that remaining possibilities are impossible. Once we exhaust all the possibilities the type of the `user` will be never and if there are some possibilities left then `_unreachableCode` will throw an error.
+
+```typescript
+type User = 'user' | 'admin';
+
+function login(user: User) {
+    switch (user) {
+        case 'admin':
+            return 'admin';
+        case 'user':
+            return 'user';
+        default:
+            const _unreachableCode: never = user;
+            return false;
+    }
+}
+```
+
